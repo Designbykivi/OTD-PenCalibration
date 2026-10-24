@@ -64,6 +64,26 @@ namespace PenCalibration
                          "Open the calibration screen on Apply"), DefaultPropertyValue(false)]
         public bool RunOnApply { set; get; }
 
+        [BooleanProperty("Reset  —  tick this, then click Apply to remove the saved calibration. Untick it afterwards.",
+                         "Reset the calibration on Apply"), DefaultPropertyValue(false)]
+        public bool ResetOnApply { set; get; }
+
+        // Last seen state of the Reset checkbox per tablet. Resetting only when the box goes from
+        // unticked to ticked means a box left ticked can't wipe the next calibration on a later Apply.
+        private static readonly Dictionary<string, bool> ResetTicked = new();
+
+        /// <returns>Whether this load should reset the calibration.</returns>
+        public static bool ShouldReset(string tablet, bool ticked, bool startingUp)
+        {
+            lock (ResetTicked)
+            {
+                bool wasTicked = ResetTicked.TryGetValue(tablet, out var previous) && previous;
+                ResetTicked[tablet] = ticked;
+                // At startup the box state comes from saved settings, not from the user ticking it just now.
+                return ticked && !wasTicked && !startingUp;
+            }
+        }
+
         public PipelinePosition Position => PipelinePosition.PostTransform;
 
         public event Action<IDeviceReport>? Emit;
@@ -85,6 +105,9 @@ namespace PenCalibration
                 : $"Loaded calibration for '{TabletName}'.");
 
             CalibrationServer.Register(this);
+
+            if (ShouldReset(TabletName, ResetOnApply, AppLauncher.DaemonStartingUp))
+                CalibrationServer.Clear(TabletName);
 
             if (RunOnApply)
                 AppLauncher.LaunchOnApply();

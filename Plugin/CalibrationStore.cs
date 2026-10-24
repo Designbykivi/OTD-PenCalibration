@@ -43,6 +43,9 @@ namespace PenCalibration
             lock (Sync)
             {
                 var all = ReadAll();
+                // Keep the previous file when a calibration is removed, so a reset can be undone by hand.
+                if (record == null && all.ContainsKey(tablet))
+                    File.Copy(FilePath, FilePath + ".bak", overwrite: true);
                 if (record == null)
                     all.Remove(tablet);
                 else

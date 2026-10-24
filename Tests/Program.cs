@@ -192,12 +192,26 @@ await Task.Run(async () =>
     await again.ClearAsync(pos.Tablet);
     reloaded.Consume(new FakeReport { Position = new Vector2(10, 10) });
     Check(output == new Vector2(10, 10) && CalibrationStore.Load(pos.Tablet) == null, "CLEAR removes the calibration");
+    Check(File.Exists(store + ".bak") && File.ReadAllText(store + ".bak").Contains(pos.Tablet), "removing a calibration keeps a backup");
+
+    // What the Reset checkbox runs: clears the live correction and the saved file.
+    await again.ApplyAsync(new CalibrationRecord { Tablet = pos.Tablet, Matrix = Transform2D.ScaleTranslate(1, 1, 5, -3).Values });
+    CalibrationServer.Clear(pos.Tablet);
+    reloaded.Consume(new FakeReport { Position = new Vector2(10, 10) });
+    Check(output == new Vector2(10, 10) && CalibrationStore.Load(pos.Tablet) == null, "Reset clears the live correction and the saved calibration");
 
     // The test process has no OTD display list, so SCREEN must fail cleanly rather than hang or crash.
     bool screenRefused = false;
     try { await again.GetScreenAsync(); }
     catch (DriverException) { screenRefused = true; }
     Check(screenRefused, "SCREEN without OTD's display list answers ERR");
+
+    Check(!PenCalibrationFilter.ShouldReset("T", ticked: true, startingUp: true), "Reset left ticked in saved settings does nothing at startup");
+    Check(!PenCalibrationFilter.ShouldReset("T", ticked: true, startingUp: false), "Reset still ticked on a later Apply does nothing");
+    Check(!PenCalibrationFilter.ShouldReset("T", ticked: false, startingUp: false)
+          && PenCalibrationFilter.ShouldReset("T", ticked: true, startingUp: false), "ticking Reset and applying resets once");
+    Check(!PenCalibrationFilter.ShouldReset("U", ticked: false, startingUp: false)
+          && !PenCalibrationFilter.ShouldReset("T", ticked: true, startingUp: false), "Reset is tracked per tablet");
 
     bool rejected = false;
     try { await again.ApplyAsync(new CalibrationRecord { Tablet = "", Matrix = Transform2D.Identity.Values }); }

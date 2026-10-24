@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>PenCalibration</AssemblyName>
     <RootNamespace>PenCalibration</RootNamespace>
-    <Version>1.0.0.0</Version>
+    <Version>1.0.1.0</Version>
     <Authors>Designbykivi</Authors>
     <Description>Wacom-style pen calibration: tap targets on screen to correct pen offset, scale, rotation and skew.</Description>
     <Copyright>Copyright (c) 2026 Designbykivi</Copyright>

@@ -182,6 +182,9 @@ namespace PenCalibration
             }
         }
 
+        /// <summary>Removes a tablet's calibration, as the Reset checkbox in the filter does.</summary>
+        public static void Clear(string tablet) => SetFor(tablet, null);
+
         private static string SetFor(string tablet, CalibrationRecord? record)
         {
             if (string.IsNullOrWhiteSpace(tablet))

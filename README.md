@@ -58,7 +58,9 @@ Installing through the Plugin Manager avoids this.
 4. The app shows the average and worst error before and after correction. Press **Enter** to save. The correction applies straight away.
 5. Tap the crosshairs again to check the result. Your taps are drawn as dots.
 
-**C** on the start screen removes the saved calibration.
+To go back to no correction, tick **Reset** in the filter's settings and click **Apply**, then untick it.
+A box left ticked does nothing on later Applies, so it can't wipe a new calibration. **C** on the
+calibration app's start screen does the same. The previous file is kept as `calibrations.json.bak`.
 
 To see the saved calibration, open the **Calibration** dropdown in the Pen Calibration filter. It lists when
 you calibrated, the average and worst error before and after, the offset at the centre of the screen, and the

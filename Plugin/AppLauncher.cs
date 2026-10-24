@@ -18,6 +18,9 @@ namespace PenCalibration
         // The daemon re-creates filters when it starts, not just on Apply. Don't pop the app up at login.
         private static readonly TimeSpan StartupGrace = TimeSpan.FromSeconds(10);
 
+        /// <summary>True while the daemon is starting up, when filters load from saved settings rather than an Apply.</summary>
+        public static bool DaemonStartingUp => DateTime.Now - Process.GetCurrentProcess().StartTime < StartupGrace;
+
         // One Apply loads the filter once per tablet; launch only once for all of them.
         private static readonly TimeSpan Debounce = TimeSpan.FromSeconds(10);
 
@@ -31,7 +34,7 @@ namespace PenCalibration
                 lock (Sync)
                 {
                     var now = DateTime.Now;
-                    if (now - Process.GetCurrentProcess().StartTime < StartupGrace || now - lastLaunch < Debounce)
+                    if (DaemonStartingUp || now - lastLaunch < Debounce)
                         return;
                     lastLaunch = now;
                 }
