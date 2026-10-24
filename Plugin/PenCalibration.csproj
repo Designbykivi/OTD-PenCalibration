@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <AssemblyName>PenCalibration</AssemblyName>
+    <RootNamespace>PenCalibration</RootNamespace>
+    <Version>1.0.0.0</Version>
+    <Authors>Designbykivi</Authors>
+    <Description>Wacom-style pen calibration: tap targets on screen to correct pen offset, scale, rotation and skew.</Description>
+    <Copyright>Copyright (c) 2026 Designbykivi</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <!-- OTD loads plugins as a single DLL; the host provides OpenTabletDriver.Plugin itself. -->
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 0.6.5.1 is the oldest net8.0 build of the plugin API; works on OTD 0.6.5 and newer. -->
+    <PackageReference Include="OpenTabletDriver.Plugin" Version="0.6.5.1" PrivateAssets="all" ExcludeAssets="runtime" />
+    <Compile Include="../Shared/*.cs" />
+  </ItemGroup>
+
+</Project>

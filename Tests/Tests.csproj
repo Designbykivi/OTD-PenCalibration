@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Self-checking console app: run ./run-tests.sh; exits non-zero on failure. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTabletDriver.Plugin" Version="0.6.5.1" />
+    <ProjectReference Include="../Plugin/PenCalibration.csproj" />
+    <Compile Include="../App/CalibrationSolver.cs;../App/DriverClient.cs" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <AssemblyName>PenCalibrationApp</AssemblyName>
+    <RootNamespace>PenCalibration.App</RootNamespace>
+    <Version>1.0.0.0</Version>
+    <Authors>Designbykivi</Authors>
+    <Description>Shows calibration targets for the OpenTabletDriver Pen Calibration filter.</Description>
+    <Copyright>Copyright (c) 2026 Designbykivi</Copyright>
+    <!-- Runs on .NET 8 or anything newer that is installed. -->
+    <RollForward>Major</RollForward>
+    <ApplicationManifest Condition="Exists('app.manifest')">app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
+    <Compile Include="../Shared/*.cs" />
+  </ItemGroup>
+
+</Project>
